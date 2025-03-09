@@ -23,6 +23,12 @@ h1 {
   animation: fadeIn 2s ease-out;
 }
 
+h2 {
+  font-size: 1.4em;
+  color: #555;
+  font-weight: normal;
+}
+
 p {
   font-size: 1.1rem;
   color: #555;

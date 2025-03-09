@@ -10,17 +10,10 @@
   <body>
     <div class="content-box">
       <h1>Benvenuti nel Mio Primo Sito Web</h1>
-      <p>
-        Questo è un sito di prova, per cui le funzioni che visualizzerete sono
-        basiche.
-      </p>
-      <p>
-        Un particolare ringraziamento a <strong>Mosh Hamedani</strong>, un
-        professionista che mi ha insegnato a programmare. Cliccate
-        <a href="https://www.codewithmosh.com" target="_blank">
-          su questo link per visitare la sua pagina
-        </a>
-      </p>
+      <h2>
+        Per visualizzare i sondaggi cliccate su
+        <a href="{% url 'sondaggi:index' %}">questo link</a>
+      </h2>
       <p>
         Per creare nuovi sondaggi,
         <a
@@ -32,8 +25,15 @@
         <a href="/admin/">a questa pagina</a>
       </p>
       <p>
-        Per visualizzare i sondaggi cliccate su
-        <a href="{% url 'sondaggi:index' %}">questo link</a>
+        Questo è un sito di prova, per cui le funzioni che visualizzerete sono
+        basiche.
+      </p>
+      <p>
+        Un particolare ringraziamento a <strong>Mosh Hamedani</strong>, un
+        professionista che mi ha insegnato a programmare. Cliccate
+        <a href="https://www.codewithmosh.com" target="_blank">
+          su questo link per visitare la sua pagina
+        </a>
       </p>
     </div>
 
