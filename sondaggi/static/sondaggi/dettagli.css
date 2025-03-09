@@ -1,0 +1,143 @@
+/* Reset degli stili di base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Corpo principale */
+body {
+  background-color: #f7f9fb;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20px;
+  font-size: 16px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+  animation: fadeIn 1.5s ease-out;
+}
+
+h1 a {
+  text-decoration: none;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+h1 a:hover {
+  color: #e74c3c;
+}
+
+/* Form */
+form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  animation: slideUp 1s ease-out;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+legend {
+  font-size: 1.6rem;
+  color: #3498db;
+  font-weight: bold;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.choices {
+  margin: 0 auto;
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+.choice-option {
+  margin-bottom: 15px;
+}
+
+.choice-option input {
+  margin-right: 10px;
+}
+
+.choice-option label {
+  color: #333;
+  font-weight: normal;
+}
+
+input[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2rem;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 20px;
+}
+
+input[type="submit"]:hover {
+  background-color: #2980b9;
+  transform: translateY(-3px);
+}
+
+/* Animazioni */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsività */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+  legend {
+    font-size: 1.4rem;
+  }
+  .choices {
+    font-size: 1rem;
+  }
+  input[type="submit"] {
+    font-size: 1rem;
+  }
+}

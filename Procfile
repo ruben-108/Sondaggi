@@ -1,0 +1,1 @@
+web: gunicorn primo_sito_web.wsgi

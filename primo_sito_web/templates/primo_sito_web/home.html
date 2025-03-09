@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HomePage</title>
+    <link rel="stylesheet" href="{% static 'primo_sito_web/home.css' %}" />
+  </head>
+  <body>
+    <div class="content-box">
+      <h1>Benvenuti nel Mio Primo Sito Web</h1>
+      <p>
+        Questo è un sito di prova, per cui le funzioni che visualizzerete sono
+        basiche.
+      </p>
+      <p>
+        Un particolare ringraziamento a <strong>Mosh Hamedani</strong>, un
+        professionista che mi ha insegnato a programmare. Cliccate
+        <a href="https://www.codewithmosh.com" target="_blank">
+          su questo link per visitare la sua pagina
+        </a>
+      </p>
+      <p>
+        Per creare nuovi sondaggi,
+        <a
+          href="mailto:RubenDeacon@protonmail.com?subject=Credenziali%20per%20Creazione%20Sondaggi">
+          scrivete una mail a RubenDeacon@protonmail.com
+        </a>
+        per richiedere le vostre credenziali. Se invece vi è già stato assegnato
+        uno username e una password, fate il login
+        <a href="/admin/">a questa pagina</a>
+      </p>
+      <p>
+        Per visualizzare i sondaggi cliccate su
+        <a href="{% url 'sondaggi:index' %}">questo link</a>
+      </p>
+    </div>
+
+    <script>
+      // Animazione di benvenuto in JS
+      document.addEventListener("DOMContentLoaded", () => {
+        const welcomeMessage = document.querySelector("h1");
+        welcomeMessage.style.transform = "scale(0)";
+        welcomeMessage.style.transition = "transform 1s ease-in-out";
+
+        setTimeout(() => {
+          welcomeMessage.style.transform = "scale(1)";
+        }, 500);
+      });
+    </script>
+  </body>
+</html>

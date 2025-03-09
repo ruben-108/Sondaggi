@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Risultati Sondaggio</title>
+    <link rel="stylesheet" href="{% static 'sondaggi/risultati.css' %}" />
+  </head>
+  <body>
+    <!-- Intestazione con link alla home page -->
+    <h1><a href="/">HomePage</a></h1>
+
+    <!-- Titolo del sondaggio -->
+    <h2>{{ question.question_text }}</h2>
+
+    <!-- Box contenente i risultati del sondaggio -->
+    <div class="sondaggi">
+      <ul>
+        {% for choice in question.choice_set.all %}
+        <li>
+          {{ choice.testo_opzione }} -- {{ choice.voti }}
+            {% if choice.voti == 0%} voto
+            {% else %} voti 
+            {% endif %}
+          {% endfor %}
+        </li>
+      </ul>
+      <!-- Link per votare di nuovo -->
+      <a href="{% url 'sondaggi:dettagli' question.id %}">Vota di nuovo?</a>
+    </div>
+  </body>
+</html>
