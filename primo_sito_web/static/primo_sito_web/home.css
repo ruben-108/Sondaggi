@@ -29,6 +29,10 @@ h2 {
   font-weight: normal;
 }
 
+.small-text {
+  font-size: 0.9rem;
+}
+
 p {
   font-size: 1.1rem;
   color: #555;
