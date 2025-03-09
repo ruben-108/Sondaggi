@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-7&@=v(86p9&v9f=#qf$js5o(22^(q7)$m6ea0yuvo)k@3k^pz0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['sondaggi.onrender.com', '127.0.0.1']
+ALLOWED_HOSTS = []
 
 
 # Application definition
