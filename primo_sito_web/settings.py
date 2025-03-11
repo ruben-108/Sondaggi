@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'primo_sito_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('database_sondaggi'),
-        'USER': os.getenv('database_sondaggi_user'),
-        'PASSWORD': os.getenv('neQykLDCiyZELfEworTqdgxCZ0mn8ZYq'),
-        'HOST': os.getenv('dpg-cv867gnnoe9s73av9t5g-a'),
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT', '5432'),  # Imposta la porta di default a 5432
     }
 }
 
