@@ -77,10 +77,15 @@ WSGI_APPLICATION = 'primo_sito_web.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('database_sondaggi'),
+        'USER': os.getenv('database_sondaggi_user'),
+        'PASSWORD': os.getenv('neQykLDCiyZELfEworTqdgxCZ0mn8ZYq'),
+        'HOST': os.getenv('dpg-cv867gnnoe9s73av9t5g-a'),
+        'PORT': '5432',
     }
 }
 
