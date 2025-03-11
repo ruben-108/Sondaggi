@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'primo_sito_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT', '5432'),  # Imposta la porta di default a 5432
+        'NAME': os.getenv('DB_NAME'),  # Prende il valore dalla variabile d'ambiente DB_NAME
+        'USER': os.getenv('DB_USER'),  # Prende il valore dalla variabile d'ambiente DB_USER
+        'PASSWORD': os.getenv('DB_PASSWORD'),  # Prende il valore dalla variabile d'ambiente DB_PASSWORD
+        'HOST': os.getenv('DB_HOST'),  # Prende il valore dalla variabile d'ambiente DB_HOST
+        'PORT': os.getenv('DB_PORT'),  # Prende il valore dalla variabile d'ambiente DB_PORT
     }
 }
 
