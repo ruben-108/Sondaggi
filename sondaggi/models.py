@@ -3,9 +3,11 @@ from django.db import models
 class Question(models.Model):
 	testo_domanda = models.CharField(max_length=200)
 	pub_data = models.DateTimeField(name='data pubblicazione')
+	votes = models.ManyToManyField('Vote', related_name='voted_questions', blank=True)
 
 	def __str__(self):
 		return self.testo_domanda
+
 
 class Choice(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -14,3 +16,11 @@ class Choice(models.Model):
 
 	def __str__(self):
 		return self.testo_opzione
+
+
+class Vote(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user_ip = models.GenericIPAddressField()
+
+    def __str__(self):
+        return f"Voto di {self.user_ip} per la domanda {self.question}"

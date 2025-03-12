@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from django.http import HttpResponseForbidden
 from django.db.models import F
 from django.urls import reverse
-from .models import Question, Choice
+from .models import Question, Choice, Vote
 
 def index(request):
 	lista_domande = Question.objects.order_by('data pubblicazione')
@@ -20,16 +21,28 @@ def risultati(request, question_id):
 
 def voti(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
+    
+    user_ip = request.META.get('REMOTE_ADDR')
+    
+    if question.votes.filter(user_ip=user_ip).exists():
+        messaggio_errore = "Hai già votato in questo sondaggio!"
+        choices = Choice.objects.filter(question=question_id)
+        lista_domande_opzioni = {'question_id': question_id, 'question': question, 'choices': choices, 'messaggio_errore': messaggio_errore}
+        return render(request, "sondaggi/dettagli.html", lista_domande_opzioni)
+    
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
     except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
+        # Ridisplay della domanda di voto
         choices = Choice.objects.filter(question=question_id)
         lista_domande_opzioni = {'question_id': question_id, 'question': question, 'choices': choices}
         return render(request, "sondaggi/dettagli.html", lista_domande_opzioni)
+    
     selected_choice.voti = F("voti") + 1
     selected_choice.save()
-    # Always return an HttpResponseRedirect after successfully dealing
-    # with POST data. This prevents data from being posted twice if a
-    # user hits the Back button.
+    
+    # Salva l'IP dell'utente come già votante
+    question.votes.create(user_ip=user_ip, question=question)
+
+    # Redirect alla pagina dei risultati
     return HttpResponseRedirect(reverse("sondaggi:risultati", args=(question_id, )))

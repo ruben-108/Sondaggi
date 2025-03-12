@@ -43,6 +43,29 @@ h1 a:hover {
   color: #e74c3c;
 }
 
+.messaggio_errore {
+  color: rgb(209, 40, 40);
+  font-weight: bold;
+  text-align: center;
+}
+
+.link-wrapper {
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+
+.risultati {
+  font-weight: bold;
+  display: inline-block;
+  color: rgb(209, 40, 40);
+  font-size: smaller;
+}
+
+.risultati:hover {
+  font-weight: bolder;
+}
+
 /* Form */
 form {
   background-color: #fff;
@@ -64,13 +87,14 @@ legend {
   font-size: 1.6rem;
   color: #3498db;
   font-weight: bold;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
 .choices {
   margin: 0 auto;
   text-align: left;
+  margin-top: 20px;
   font-size: 1.2rem;
 }
 

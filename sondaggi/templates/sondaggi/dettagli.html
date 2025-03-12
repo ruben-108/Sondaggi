@@ -14,6 +14,12 @@
         {% csrf_token %}
         <fieldset>
           <legend>{{ question.testo_domanda }}</legend>
+          {% if messaggio_errore %}
+            <p class="messaggio_errore">{{ messaggio_errore }}</p>
+            <div class="link-wrapper">
+              <a href="{% url 'sondaggi:risultati' question_id %}", class="risultati">Visualizza risultati</a>
+            </div>
+          {% endif %}
           <div class="choices">
             {% if choices %} {% for choice in choices %}
             <div class="choice-option">
