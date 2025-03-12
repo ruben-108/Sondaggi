@@ -19,10 +19,18 @@ def risultati(request, question_id):
     lista_domande_opzioni = {'question_id': question_id, 'question': question}
     return render(request, 'sondaggi/risultati.html', lista_domande_opzioni)
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
 def voti(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     
-    user_ip = request.META.get('REMOTE_ADDR')
+    user_ip = get_client_ip(request)
     
     if question.votes.filter(user_ip=user_ip).exists():
         messaggio_errore = "Hai già votato in questo sondaggio!"
