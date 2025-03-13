@@ -20,7 +20,6 @@ class QuestionAdmin(admin.ModelAdmin):
         for question in queryset:
             question.choice_set.update(voti=0)  # Azzera i voti per tutte le scelte di questa domanda
             question.data_pubblicazione = timezone.now()
-            print(f'\n{timezone.now()}\n')
             question.save()
         self.message_user(request, "I voti sono stati azzerati per tutte le opzioni.")
     
