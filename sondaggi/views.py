@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.db.models import F
 from django.urls import reverse
+from django.utils import timezone
 import datetime
 from .models import Question, Choice
 
 def index(request):
-	lista_domande = Question.objects.order_by('data pubblicazione')
+	lista_domande = Question.objects.order_by('data_pubblicazione')
 	return render(request, "sondaggi/index.html", {'domande': lista_domande})
 
 def dettagli(request, question_id):
@@ -16,8 +17,23 @@ def dettagli(request, question_id):
 
 def risultati(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    lista_domande_opzioni = {'question_id': question_id, 'question': question}
+
+    choices = question.choice_set.all()
+    total_votes = sum(choice.voti for choice in choices)
+
+    # Creo un nuovo dizionario per ogni scelta con la percentuale calcolata
+    choices_with_percentage = []
+    for choice in choices:
+        percentuale = f'{(choice.voti / total_votes) * 100 if total_votes > 0 else 0:.2f}'
+        choices_with_percentage.append({
+            'choice': choice,
+            'percentuale': percentuale
+        })
+
+    lista_domande_opzioni = {'question_id': question_id, 'question': question, 'choices_with_percentage': choices_with_percentage}
     return render(request, 'sondaggi/risultati.html', lista_domande_opzioni)
+
+
 
 def mostra_errori(request, question, messaggio_errore):
     """Funzione di utilità per gestire la visualizzazione degli errori e il rendering del template"""
@@ -33,7 +49,8 @@ def voti(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
 
     cookie_name = f'voted_{question_id}'
-    if request.COOKIES.get(cookie_name):
+    timestamp_name = f'timestamp_{question_id}'
+    if request.COOKIES.get(cookie_name) and request.COOKIES.get(timestamp_name) > str(question.data_pubblicazione):
         messaggio_errore = "Hai già votato in questo sondaggio!"
         return mostra_errori(request, question, messaggio_errore)
 
@@ -46,10 +63,9 @@ def voti(request, question_id):
     selected_choice.voti = F("voti") + 1
     selected_choice.save()
     
-    # Crea un cookie per marcare l'utente come votante
     response = HttpResponseRedirect(reverse("sondaggi:risultati", args=(question_id,)))
     
-    # Aggiungi il cookie con il nome `voted_<question_id>` e un valore unico basato sulla domanda
-    response.set_cookie(cookie_name, 'true', max_age=datetime.timedelta(days=365))  # Il cookie durerà per un anno
+    response.set_cookie(cookie_name, 'true', max_age=datetime.timedelta(days=100))
+    response.set_cookie(timestamp_name, timezone.now(), max_age=datetime.timedelta(days=100))
 
     return response

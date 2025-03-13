@@ -2,7 +2,7 @@ from django.db import models
 
 class Question(models.Model):
 	testo_domanda = models.CharField(max_length=200)
-	pub_data = models.DateTimeField(name='data pubblicazione')
+	data_pubblicazione = models.DateTimeField()
 
 	def __str__(self):
 		return self.testo_domanda

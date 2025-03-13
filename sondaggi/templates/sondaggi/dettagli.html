@@ -1,44 +1,44 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dettagli Sondaggio</title>
-    <link rel="stylesheet" href="{% static 'sondaggi/dettagli.css' %}" />
-  </head>
-  <body>
-    <h1><a href="/">HomePage</a></h1>
-    <div class="container">
-      <form action="{% url 'sondaggi:voti' question_id %}" method="post">
-        {% csrf_token %}
-        <fieldset>
-          <legend>{{ question.testo_domanda }}</legend>
-          {% if messaggio_errore %}
-            <p class="messaggio_errore">{{ messaggio_errore }}</p>
-            <div class="link-wrapper">
-              <a href="{% url 'sondaggi:risultati' question_id %}", class="risultati">Visualizza risultati</a>
-            </div>
-          {% endif %}
-          <div class="choices">
-            {% if choices %} {% for choice in choices %}
-            <div class="choice-option">
-              <input
-                type="radio"
-                name="choice"
-                id="choice{{ forloop.counter }}"
-                value="{{ choice.id }}" />
-              <label for="choice{{ forloop.counter }}">
-                {{ choice.testo_opzione }}
-              </label>
-            </div>
-            {% endfor %} {% else %}
-            <p>Non ci sono opzioni da cui scegliere per il momento.</p>
-            {% endif %}
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dettagli Sondaggio</title>
+  <link rel="stylesheet" href="{% static 'sondaggi/dettagli.css' %}" />
+</head>
+
+<body>
+  <h1><a href="/">HomePage</a></h1>
+  <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
+  <div class="container">
+    <form action="{% url 'sondaggi:voti' question_id %}" method="post">
+      {% csrf_token %}
+      <fieldset>
+        <legend>{{ question.testo_domanda }}</legend>
+        {% if messaggio_errore %}
+        <p class="messaggio_errore">{{ messaggio_errore }}</p>
+        <div class="link-wrapper">
+          <a href="{% url 'sondaggi:risultati' question_id %}", class="risultati">Visualizza risultati</a>
+        </div>
+        {% endif %}
+        <div class="choices">
+          {% if choices %} {% for choice in choices %}
+          <div class="choice-option">
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+            <label for="choice{{ forloop.counter }}">
+              {{ choice.testo_opzione }}
+            </label>
           </div>
-        </fieldset>
-        <input type="submit" value="Vota" />
-      </form>
-    </div>
-  </body>
+          {% endfor %} {% else %}
+          <p>Non ci sono opzioni da cui scegliere per il momento.</p>
+          {% endif %}
+        </div>
+      </fieldset>
+      <input type="submit" value="Vota" />
+    </form>
+  </div>
+</body>
+
 </html>
