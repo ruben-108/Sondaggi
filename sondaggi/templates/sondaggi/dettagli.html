@@ -13,7 +13,7 @@
   <h1><a href="/">HomePage</a></h1>
   <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
   <div class="container">
-    <form action="{% url 'sondaggi:voti' question_id %}" method="post">
+    <form action="{% url 'sondaggi:voti' question_id %}" method="post", id="votingForm">
       {% csrf_token %}
       <fieldset>
         <legend>{{ question.testo_domanda }}</legend>
@@ -24,21 +24,63 @@
         </div>
         {% endif %}
         <div class="choices">
-          {% if choices %} {% for choice in choices %}
-          <div class="choice-option">
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
-            <label for="choice{{ forloop.counter }}">
-              {{ choice.testo_opzione }}
-            </label>
-          </div>
-          {% endfor %} {% else %}
-          <p>Non ci sono opzioni da cui scegliere per il momento.</p>
+          {% if choices %}
+            {% for choice in choices %}
+            <div class="choice-option">
+              <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+              <label for="choice{{ forloop.counter }}">
+                {{ choice.testo_opzione }}
+              </label>
+            </div>
+            {% endfor %}
+          {% else %}
+            <p>Non ci sono opzioni da cui scegliere per il momento.</p>
           {% endif %}
         </div>
       </fieldset>
-      <input type="submit" value="Vota" />
+      <input type="submit" value="Vota" , id="voteButton"/>
     </form>
   </div>
+
+  <div id="loginModal" class="modal" style="display: {% if mostra_modal %}flex{% else %}none{% endif %};">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h2 class="pop-up">Per votare, inserisci le tue credenziali</h2>
+      <form id="loginForm", action="{% url 'sondaggi:login' question_id %}", method="post">
+        {% csrf_token %}
+        {% if messaggio_errore_login %}
+          <div class="messaggio_errore">
+            <p>{{ messaggio_errore_login }}</p>
+          </div>
+        {% endif %}
+        <label class="label-popup" for="username">Username:</label>        
+        <input type="text" id="username" name="username" required />
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+        <p class="account">Non sei registrato? Crea un account</p>
+        <button type="submit">Accedi</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Modale per login
+    var modal = document.getElementById("loginModal");
+    var closeModal = document.getElementById("closeModal");
+    var voteButton = document.getElementById("voteButton");
+    var votingForm = document.getElementById("votingForm");
+
+    // Mostra la modale quando si clicca sul pulsante "Vota"
+    voteButton.onclick = function (e) {
+      e.preventDefault();  // Impedisce l'invio immediato del form
+      modal.style.display = "flex";
+    }
+
+    // Chiudi la modale quando clicchi sulla "X"
+    closeModal.onclick = function () {
+      modal.style.display = "none";
+    }
+  </script>
 </body>
 
 </html>

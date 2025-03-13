@@ -11,8 +11,9 @@
 
 <body>
   <h1><a href="/">HomePage</a></h1>
+  <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
   <div class="sondaggi">
-    <h2>{{ question.testo_domanda }}</h2>
+    <h3>{{ question.testo_domanda }}</h2>
     {% for item in choices_with_percentage %}
     <strong>{{ item.choice.testo_opzione }}</strong>
     <li>

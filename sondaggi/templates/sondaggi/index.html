@@ -9,7 +9,7 @@
   </head>
   <body>
     <h1><a href="/">HomePage</a></h1>
-    <h2>Sondaggi Disponibili</h2>
+    <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
     <div class="sondaggi">
       {% if domande %} {% for domanda in domande %}
       <p>

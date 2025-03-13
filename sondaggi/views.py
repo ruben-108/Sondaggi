@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.db.models import F
 from django.urls import reverse
 from django.utils import timezone
+from django.contrib.auth import authenticate, login
 import datetime
 from .models import Question, Choice
 
@@ -69,3 +70,28 @@ def voti(request, question_id):
     response.set_cookie(timestamp_name, timezone.now(), max_age=datetime.timedelta(days=100))
 
     return response
+
+def login_view(request, question_id):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # Autenticazione dell'utente
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            # Se l'utente esiste e la password è corretta
+            login(request, user)
+            return HttpResponseRedirect(reverse("sondaggi:dettagli", args=(question_id,)))
+    # Se il login fallisce
+    messaggio_errore = "Credenziali errate. Riprova."
+    question = get_object_or_404(Question, pk=question_id)
+    choices = question.choice_set.all()
+    lista_domande_opzioni = {
+        'question_id': question_id, 
+        'question': question, 
+        'choices': choices, 
+        'messaggio_errore_login': messaggio_errore,
+        'mostra_modal': True
+    }
+    return render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
