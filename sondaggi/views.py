@@ -128,40 +128,38 @@ class UserCreateForm(forms.Form):
 
 
 def nuovo_account(request, question_id):
-    try:
-        if request.method == 'POST':
-            form = UserCreateForm(request.POST)
-            if form.is_valid():
-                # Creazione dell'utente
-                username = form.cleaned_data['username']
-                password = form.cleaned_data['password']
-                try:
-                    User.objects.create_user(username=username, password=password)
-                except IntegrityError:
-                    return render(request, 'sondaggi/account.html', {'question_id': question_id, 'username_presente': "L'username inserito è già in uso. Scegline un altro."})
+    if request.method == 'POST':
+        form = UserCreateForm(request.POST)
+        if form.is_valid():
+            # Creazione dell'utente
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            try:
+                User.objects.create_user(username=username, password=password)
+            except IntegrityError:
+                return render(request, 'sondaggi/account.html', {'question_id': question_id, 'username_presente': "L'username inserito è già in uso. Scegline un altro."})
 
-                question = get_object_or_404(Question, pk=question_id)
-                choices = question.choice_set.all()
-                lista_domande_opzioni = {
-                    'question_id': question_id,
-                    'question': question, 
-                    'choices': choices,
-                    'accesso_valido': "True"
-                }
-
-                return render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
-        elif request.method == 'GET':
-            return render(request, 'sondaggi/account.html', {'question_id': question_id})
-        lista = {
-            'question_id': question_id,
-            'messaggio_errore_username': '150 caratteri o meno. Solo lettere, cifre e @/./+/-/_.',
-            'messaggio_errore_psw': '''
-    La password non può essere troppo simile alle altre informazioni personali.<br />
-    La password deve contenere almeno 8 caratteri.<br />
-    La password non può essere una password comunemente usata.<br />
-    La password non può essere interamente numerica.''',
-            'messaggio_errore_psw_conferma': 'Inserire la stessa password di prima, per la verifica.'
-        }
-        return render(request, 'sondaggi/account.html', lista)
-    except Exception as ex:
-        print(f'\n\nex:\n{ex}\n\n')
+            question = get_object_or_404(Question, pk=question_id)
+            choices = question.choice_set.all()
+            lista_domande_opzioni = {
+                'question_id': question_id,
+                'question': question, 
+                'choices': choices,
+                'accesso_valido': "True"
+            }
+            response = render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
+            response.set_cookie(COOKIE_NAME_LOGIN, 'true', max_age=datetime.timedelta(days=100))
+            return response
+    elif request.method == 'GET':
+        return render(request, 'sondaggi/account.html', {'question_id': question_id})
+    lista = {
+        'question_id': question_id,
+        'messaggio_errore_username': '150 caratteri o meno. Solo lettere, cifre e @/./+/-/_.',
+        'messaggio_errore_psw': '''
+La password non può essere troppo simile alle altre informazioni personali.<br />
+La password deve contenere almeno 8 caratteri.<br />
+La password non può essere una password comunemente usata.<br />
+La password non può essere interamente numerica.''',
+        'messaggio_errore_psw_conferma': 'Inserire la stessa password di prima, per la verifica.'
+    }
+    return render(request, 'sondaggi/account.html', lista)
