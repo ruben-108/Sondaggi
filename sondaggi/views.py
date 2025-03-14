@@ -5,11 +5,10 @@ from django.utils import timezone
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 import datetime
-from .models import Question, Choice
+from .models import Question, Choice, Vote
 
 COOKIE_NAME_LOGIN = 'logged_in'
 
@@ -75,6 +74,10 @@ def voti(request, question_id):
     
     selected_choice.voti = F("voti") + 1
     selected_choice.save()
+
+    user = User.objects.get(pk=int(request.COOKIES.get(COOKIE_NAME_LOGIN)))
+    vote = Vote(question=question, choice=selected_choice, user=user)
+    vote.save()
     
     response = HttpResponseRedirect(reverse("sondaggi:risultati", args=(question_id,)))
     
@@ -103,7 +106,7 @@ def login_view(request, question_id):
             login(request, user)
             lista_domande_opzioni['accesso_valido'] = "True"
             response = render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
-            response.set_cookie(COOKIE_NAME_LOGIN, 'true', max_age=datetime.timedelta(days=100))
+            response.set_cookie(COOKIE_NAME_LOGIN, user.pk, max_age=datetime.timedelta(days=100))
             return response
     # Se il login fallisce
     messaggio_errore = "Credenziali errate. Riprova."

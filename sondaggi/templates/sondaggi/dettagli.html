@@ -32,19 +32,21 @@
           </div>
           {% endif %}
           <div class="choices">
-            {% if choices %} {% for choice in choices %}
-            <div class="choice-option">
-              <input
-                type="radio"
-                name="choice"
-                id="choice{{ forloop.counter }}"
-                value="{{ choice.id }}" />
-              <label for="choice{{ forloop.counter }}">
-                {{ choice.testo_opzione }}
-              </label>
-            </div>
-            {% endfor %} {% else %}
-            <p>Non ci sono opzioni da cui scegliere per il momento.</p>
+            {% if choices %}
+              {% for choice in choices %}
+                <div class="choice-option">
+                  <input
+                    type="radio"
+                    name="choice"
+                    id="choice{{ forloop.counter }}"
+                    value="{{ choice.id }}" />
+                      <label for="choice{{ forloop.counter }}">
+                        {{ choice.testo_opzione }}
+                  </label>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p>Non ci sono opzioni da cui scegliere per il momento.</p>
             {% endif %}
           </div>
         </fieldset>

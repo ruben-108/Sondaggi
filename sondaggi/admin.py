@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Question, Choice
+from .models import Question, Choice, Vote
 from django.utils import timezone
 
 
@@ -29,3 +29,4 @@ class QuestionAdmin(admin.ModelAdmin):
     actions = [reset_voti]
 
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(Vote)
