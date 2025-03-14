@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Nuovo Account</title>
+	<link rel="stylesheet" href="{% static 'sondaggi/account.css' %}" />
+</head>
+<body>
+	<h1><a href="/">HomePage</a></h1>
+	<div class="modal">
+		<div class="modal-content">
+			<h2>Creazione Nuovo Account</h2>
+			<form action="{% url 'sondaggi:account' question_id %}", method="post">
+				{% csrf_token %}
+				<label for="username">Username:
+					{% if messaggio_errore_username %}
+					<div class="messaggio_errore">
+						{{ messaggio_errore_username }}
+					</div>
+					{% endif %}
+					{% if username_presente %}
+					<div class="messaggio_errore">
+						{{ username_presente }}
+					</div>
+					{% endif %}
+				</label>
+				<input type="text" name="username" required />
+				<label for="password">Password:
+					{% if messaggio_errore_username %}
+					<div class="messaggio_errore">
+						{{ messaggio_errore_psw|safe }}
+					</div>
+					{% endif %}
+				</label>
+				<input type="password" name="password" required />
+				<label for="conferma_psw">Ripeti password:
+					{% if messaggio_errore_username %}
+					<div class="messaggio_errore">
+						{{ messaggio_errore_psw_conferma }}
+					</div>
+					{% endif %}
+				</label>
+				<input type="password" name="password_confirmation" required />
+				<button type="submit">Crea account</button>
+        	</form>
+      	</div>
+    </div>
+</body>
+</html>

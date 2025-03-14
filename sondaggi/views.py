@@ -3,6 +3,11 @@ from django.db.models import F
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django import forms
 import datetime
 from .models import Question, Choice
 
@@ -57,9 +62,10 @@ def voti(request, question_id):
 
     cookie_name = f'voted_{question_id}'
     timestamp_name = f'timestamp_{question_id}'
-    if request.COOKIES.get(cookie_name) and request.COOKIES.get(timestamp_name) > str(question.data_pubblicazione):
-        messaggio_errore = "Hai già votato in questo sondaggio!"
-        return mostra_errori(request, question, messaggio_errore)
+    if request.COOKIES.get(cookie_name):
+        if request.COOKIES.get(timestamp_name) > str(question.data_pubblicazione):
+            messaggio_errore = "Hai già votato in questo sondaggio!"
+            return mostra_errori(request, question, messaggio_errore)
 
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
@@ -97,7 +103,7 @@ def login_view(request, question_id):
             login(request, user)
             lista_domande_opzioni['accesso_valido'] = "True"
             response = render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
-            response.set_cookie(COOKIE_NAME_LOGIN, 'true', max_age=datetime.timedelta(days=5))
+            response.set_cookie(COOKIE_NAME_LOGIN, 'true', max_age=datetime.timedelta(days=100))
             return response
     # Se il login fallisce
     messaggio_errore = "Credenziali errate. Riprova."
@@ -105,3 +111,57 @@ def login_view(request, question_id):
     lista_domande_opzioni['mostra_modal'] = True
     lista_domande_opzioni['accesso_valido'] = "False"
     return render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
+
+class UserCreateForm(forms.Form):
+    username = forms.CharField(max_length=100)
+    password = forms.CharField(widget=forms.PasswordInput())
+    password_confirmation = forms.CharField(widget=forms.PasswordInput())
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password_confirmation = cleaned_data.get("password_confirmation")
+
+        if password != password_confirmation:
+            raise ValidationError("Le password non corrispondono.")
+        return cleaned_data
+
+
+def nuovo_account(request, question_id):
+    try:
+        if request.method == 'POST':
+            form = UserCreateForm(request.POST)
+            if form.is_valid():
+                # Creazione dell'utente
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
+                try:
+                    User.objects.create_user(username=username, password=password)
+                except IntegrityError:
+                    return render(request, 'sondaggi/account.html', {'question_id': question_id, 'username_presente': "L'username inserito è già in uso. Scegline un altro."})
+
+                question = get_object_or_404(Question, pk=question_id)
+                choices = question.choice_set.all()
+                lista_domande_opzioni = {
+                    'question_id': question_id,
+                    'question': question, 
+                    'choices': choices,
+                    'accesso_valido': "True"
+                }
+
+                return render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
+        elif request.method == 'GET':
+            return render(request, 'sondaggi/account.html', {'question_id': question_id})
+        lista = {
+            'question_id': question_id,
+            'messaggio_errore_username': '150 caratteri o meno. Solo lettere, cifre e @/./+/-/_.',
+            'messaggio_errore_psw': '''
+    La password non può essere troppo simile alle altre informazioni personali.<br />
+    La password deve contenere almeno 8 caratteri.<br />
+    La password non può essere una password comunemente usata.<br />
+    La password non può essere interamente numerica.''',
+            'messaggio_errore_psw_conferma': 'Inserire la stessa password di prima, per la verifica.'
+        }
+        return render(request, 'sondaggi/account.html', lista)
+    except Exception as ex:
+        print(f'\n\nex:\n{ex}\n\n')
