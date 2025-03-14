@@ -72,6 +72,13 @@ def voti(request, question_id):
     return response
 
 def login_view(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    choices = question.choice_set.all()
+    lista_domande_opzioni = {
+        'question_id': question_id, 
+        'question': question, 
+        'choices': choices
+    }
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -82,16 +89,11 @@ def login_view(request, question_id):
         if user is not None:
             # Se l'utente esiste e la password è corretta
             login(request, user)
-            return HttpResponseRedirect(reverse("sondaggi:dettagli", args=(question_id,)))
+            lista_domande_opzioni['accesso_valido'] = "True"
+            return render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
     # Se il login fallisce
     messaggio_errore = "Credenziali errate. Riprova."
-    question = get_object_or_404(Question, pk=question_id)
-    choices = question.choice_set.all()
-    lista_domande_opzioni = {
-        'question_id': question_id, 
-        'question': question, 
-        'choices': choices, 
-        'messaggio_errore_login': messaggio_errore,
-        'mostra_modal': True
-    }
+    lista_domande_opzioni['messaggio_errore_login'] = messaggio_errore
+    lista_domande_opzioni['mostra_modal'] = True
+    lista_domande_opzioni['accesso_valido'] = "False"
     return render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)

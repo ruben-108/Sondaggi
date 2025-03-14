@@ -65,17 +65,21 @@
 
   <script>
     // Modale per login
+    var accessoValido = "{{ accesso_valido }}";
     var modal = document.getElementById("loginModal");
     var closeModal = document.getElementById("closeModal");
     var voteButton = document.getElementById("voteButton");
     var votingForm = document.getElementById("votingForm");
 
-    // Mostra la modale quando si clicca sul pulsante "Vota"
-    voteButton.onclick = function (e) {
-      e.preventDefault();  // Impedisce l'invio immediato del form
-      modal.style.display = "flex";
-    }
 
+    voteButton.onclick = function (e) {
+      if (accessoValido === "True") {
+        votingForm.submit();
+      } else {
+        e.preventDefault();
+        modal.style.display = "flex";
+      }
+    }
     // Chiudi la modale quando clicchi sulla "X"
     closeModal.onclick = function () {
       modal.style.display = "none";

@@ -33,7 +33,6 @@ h1 {
 }
 
 h1 a {
-  text-decoration: none;
   color: #2c3e50;
   font-weight: 600;
 }
@@ -80,7 +79,6 @@ h2 a:hover {
   font-weight: bolder;
 }
 
-/* Form */
 form {
   background-color: #fff;
   padding: 30px;
