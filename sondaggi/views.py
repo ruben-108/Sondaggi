@@ -6,15 +6,21 @@ from django.contrib.auth import authenticate, login
 import datetime
 from .models import Question, Choice
 
+COOKIE_NAME_LOGIN = 'logged_in'
+
 def index(request):
 	lista_domande = Question.objects.order_by('data_pubblicazione')
 	return render(request, "sondaggi/index.html", {'domande': lista_domande})
 
 def dettagli(request, question_id):
-	question = get_object_or_404(Question, pk=question_id)
-	choices = Choice.objects.filter(question=question_id)
-	lista_domande_opzioni = {'question_id': question_id, 'question': question, 'choices': choices}
-	return render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
+    question = get_object_or_404(Question, pk=question_id)
+    choices = Choice.objects.filter(question=question_id)
+
+    lista_domande_opzioni = {'question_id': question_id, 'question': question, 'choices': choices}
+    if request.COOKIES.get(COOKIE_NAME_LOGIN):
+        lista_domande_opzioni['accesso_valido'] = "True"
+
+    return render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
 
 def risultati(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -90,7 +96,9 @@ def login_view(request, question_id):
             # Se l'utente esiste e la password è corretta
             login(request, user)
             lista_domande_opzioni['accesso_valido'] = "True"
-            return render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
+            response = render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
+            response.set_cookie(COOKIE_NAME_LOGIN, 'true', max_age=datetime.timedelta(days=5))
+            return response
     # Se il login fallisce
     messaggio_errore = "Credenziali errate. Riprova."
     lista_domande_opzioni['messaggio_errore_login'] = messaggio_errore
