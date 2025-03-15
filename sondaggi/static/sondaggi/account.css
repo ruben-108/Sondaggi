@@ -21,6 +21,7 @@ body {
   background-color: white;
   border-radius: 8px;
   padding: 30px;
+  margin: 20px; /* Aggiungi un margine per distanziare la modal dai bordi */
   width: 100%;
   max-width: 500px;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
@@ -117,8 +118,6 @@ button:active {
 @media (max-width: 480px) {
   .modal {
     padding: 20px;
-    padding-left: 15px; /* Spazio a sinistra */
-    padding-right: 15px; /* Spazio a destra */
   }
 
   .modal-content h2 {
