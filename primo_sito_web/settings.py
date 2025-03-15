@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'primo_sito_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'NAME': 'database_sondaggi',
+        'USER': 'database_sondaggi_user',
+        'PASSWORD': 'neQykLDCiyZELfEworTqdgxCZ0mn8ZYq',
+        'HOST': 'dpg-cv867gnnoe9s73av9t5g-a.oregon-postgres.render.com',
+        'PORT': '5432',
     }
 }
 

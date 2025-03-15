@@ -117,6 +117,8 @@ button:active {
 @media (max-width: 480px) {
   .modal {
     padding: 20px;
+    padding-left: 15px; /* Spazio a sinistra */
+    padding-right: 15px; /* Spazio a destra */
   }
 
   .modal-content h2 {
