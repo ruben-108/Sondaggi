@@ -8,21 +8,21 @@
 	<link rel="stylesheet" href="{% static 'sondaggi/account.css' %}" />
 </head>
 <body>
-	<h1><a href="/">HomePage</a></h1>
 	<div class="modal">
+		<h1><a href="/">HomePage</a></h1>
 		<div class="modal-content">
 			<h2>Creazione Nuovo Account</h2>
 			<form action="{% url 'sondaggi:account' question_id %}", method="post">
 				{% csrf_token %}
 				<label for="username">Username:
-					{% if messaggio_errore_username %}
-					<div class="messaggio_errore">
-						{{ messaggio_errore_username }}
-					</div>
-					{% endif %}
 					{% if username_presente %}
 					<div class="messaggio_errore">
 						{{ username_presente }}
+					</div>
+					{% endif %}
+					{% if messaggio_errore_username %}
+					<div class="messaggio_errore">
+						{{ messaggio_errore_username }}
 					</div>
 					{% endif %}
 				</label>

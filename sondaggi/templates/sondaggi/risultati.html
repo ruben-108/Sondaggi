@@ -1,29 +1,29 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="it">
+  {% load static %}
+  <!DOCTYPE html>
+  <html lang="it">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Risultati Sondaggio</title>
-  <link rel="stylesheet" href="{% static 'sondaggi/risultati.css' %}" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Risultati Sondaggio</title>
+    <link rel="stylesheet" href="{% static 'sondaggi/risultati.css' %}" />
+  </head>
 
-<body>
-  <h1><a href="/">HomePage</a></h1>
-  <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
-  <div class="sondaggi">
-    <h3>{{ question.testo_domanda }}</h2>
-    {% for item in choices_with_percentage %}
-    <strong>{{ item.choice.testo_opzione }}</strong>
-    <li>
-      {{ item.choice.voti }}
-      {% if item.choice.voti == 1 %}voto{% else %}voti{% endif %} --
-      {{ item.percentuale }}%
-    </li>
-    {% endfor %}
-    <a href="{% url 'sondaggi:dettagli' question.id %}" class="vote-again-btn">Vota di nuovo?</a>
-  </div>
-</body>
+  <body>
+    <h1><a href="/">HomePage</a></h1>
+    <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
+    <div class="sondaggi">
+      <h3>{{ question.testo_domanda }}</h2>
+      {% for item in choices_with_percentage %}
+      <strong>{{ item.choice.testo_opzione }}</strong>
+      <li>
+        {{ item.choice.voti }}
+        {% if item.choice.voti == 1 %}voto{% else %}voti{% endif %} --
+        {{ item.percentuale }}%
+      </li>
+      {% endfor %}
+      <a href="{% url 'sondaggi:dettagli' question.id %}" class="vote-again-btn">Vota di nuovo?</a>
+    </div>
+  </body>
 
-</html>
+  </html>

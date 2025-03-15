@@ -1,9 +1,19 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 
 class Question(models.Model):
     testo_domanda = models.CharField(max_length=200)
     data_pubblicazione = models.DateTimeField()
+    tempo = models.IntegerField(
+        null=True,
+        blank=True,
+        default=600,
+        validators=[
+            MinValueValidator(10),
+            MaxValueValidator(600)
+        ]
+    )
 
     def __str__(self):
         return f'{self.testo_domanda}'

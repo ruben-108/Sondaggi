@@ -1,176 +1,141 @@
-body,
-html {
-  height: 100%;
-  font-family: "Roboto", sans-serif;
+/* RESET DELLO STILE PREDEFINITO */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  background-color: #f7f9fb;
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f8ff; /* Azzurro chiaro */
   color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   height: 100vh;
-  padding: 20px;
-  font-size: 16px;
+  overflow: hidden;
 }
 
-h1 {
-  font-size: 2.5rem;
-  text-align: center;
-  letter-spacing: 2px;
-  margin-top: 10px;
-  margin-bottom: 0%;
-  animation: fadeIn 1.5s ease-out;
-}
-a
-h1 a {
-  color: #2c3e50;
-  font-weight: 600;
+/* STILE DELLA MODAL */
+.modal {
+  background-color: white;
+  border-radius: 8px;
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-h1 a:hover {
-  color: #e74c3c;
-}
-
-h2 {
-  font-size: 2.5rem;
-  color: #2980b9;
-  font-weight: 600;
+.modal h1 {
+  font-size: 44px;
   text-align: center;
   margin-bottom: 20px;
-  letter-spacing: 2px;
-  animation: fadeIn 1.5s ease-out;
 }
 
+.modal h1 a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.modal h1 a:hover {
+  text-decoration: underline;
+}
+
+/* STILE DEI TITOLI E FORM */
+.modal-content h2 {
+  font-size: 30px;
+  color: #2980b9;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #2980b9;
+  outline: none;
+}
+
+/* ANIMAZIONI DEGLI ERRORI */
 .messaggio_errore {
   color: rgb(209, 40, 40);
   font-weight: bold;
   text-align: justify;
   margin-top: 5px;
   margin-bottom: 10px;
+  opacity: 0;
+  animation: fadeInError 0.5s forwards;
 }
 
-.modal {
-  display: flex;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f7f9fb;
-  justify-content: center;
-  align-items: center;
+@keyframes fadeInError {
+  to {
+    opacity: 1;
+  }
 }
 
-.modal-content {
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px; /* Limita la larghezza massima */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-}
-
-form {
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  width: 100%; /* Usa tutta la larghezza disponibile */
-  max-width: 400px; /* Larghezza massima */
-  animation: slideUp 1s ease-out;
-  margin: 0 auto; /* Centra il form orizzontalmente */
-}
-
-label[for="password"],
-label[for="conferma_psw"],
-label[for="username"] {
-  color: #333;
-  font-weight: bold;
-  display: block; /* Assicurati che le etichette siano su righe separate */
-  margin-top: 20px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-}
-
-input[type="text"],
-input[type="password"] {
-  width: calc(100% - 20px); /* Rendi la larghezza degli input uniformi e compensa il padding */
-  padding: 10px;
-  margin: 0px 10px 0px 10px; /* Margini uguali a sinistra e a destra */
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  box-sizing: border-box; /* Assicura che il padding non influisca sulla larghezza */
-}
-
+/* STILE DEL PULSANTE */
 button {
-  width: calc(100% - 20px); /* Rendi il bottone della stessa larghezza degli input */
-  padding: 10px;
+  width: 100%;
+  padding: 12px;
   background-color: #3498db;
   color: white;
   font-size: 16px;
   border: none;
-  margin-top: 40px;
-  border-radius: 8px;
+  border-radius: 4px;
+  margin-top: 10px;
   cursor: pointer;
-  box-sizing: border-box; /* Impedisce che il padding cambi la larghezza */
-  margin-left: 10px; /* Per centrare meglio il bottone */
-  margin-right: 10px; /* Per centrare meglio il bottone */
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: #2282c2;
 }
 
-/* Responsività per schermi piccoli */
-@media (max-width: 600px) {
-  .modal-content {
-    width: 90%; /* 90% della larghezza per schermi piccoli */
+button:active {
+  background-color: #007a99;
+}
+
+/* MEDIA QUERY PER SCHERMI PIÙ PICCOLI (mobile) */
+@media (max-width: 480px) {
+  .modal {
+    padding: 20px;
   }
 
-  input[type="text"],
-  input[type="password"] {
-    font-size: 14px;
+  .modal-content h2 {
+    font-size: 18px;
   }
 
-  button {
-    font-size: 14px;
+  input, button {
+    padding: 10px;
   }
 }
 
-/* Animazioni */
+/* ANIMAZIONE DELL'INGRESSO */
 @keyframes fadeIn {
   from {
     opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-/* Responsività */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2.75rem;
-  }
-  h2 {
-    font-size: 2.5rem;
-  }
-  input[type="submit"] {
-    font-size: 1rem;
   }
 }

@@ -11,6 +11,12 @@
   <body>
     <h1><a href="/">HomePage</a></h1>
     <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
+    <div id="timer">
+      <h3>Tempo Rimanente: <span id="countdown"></span></h3>
+      <div id="progressBarContainer">
+          <div id="progressBar"></div>
+      </div>
+    </div>
     <div class="container">
       <form
         action="{% url 'sondaggi:voti' question_id %}"
@@ -101,6 +107,36 @@
       closeModal.onclick = function () {
         modal.style.display = "none";
       };
+
+      // Tempo di durata del timer (10 minuti = 600 secondi)
+      var tempoTotale = 30; // in secondi
+      var tempoRestante = tempoTotale;
+      var countdownElement = document.getElementById('countdown');
+      var progressBar = document.getElementById('progressBar');
+      var voteButton = document.getElementById('voteButton');
+      
+      // Aggiorniamo la barra di progresso ogni secondo
+      var countdownInterval = setInterval(function() {
+          var minuti = Math.floor(tempoRestante / 60);
+          var secondi = tempoRestante % 60;
+
+          // Aggiorniamo il testo del countdown
+          countdownElement.innerHTML = minuti + "m " + secondi + "s ";
+
+          // Aggiorniamo la larghezza della barra di progresso
+          var percentuale = (tempoRestante / tempoTotale) * 100;
+          progressBar.style.width = percentuale + "%";
+
+          // Se il tempo è scaduto
+          if (tempoRestante <= 0) {
+              clearInterval(countdownInterval);
+              countdownElement.innerHTML = "Il tempo è scaduto!";
+              progressBar.style.width = "0%"; // La barra si svuota
+              voteButton.disabled = true; // Disabilita il pulsante di voto
+          } else {
+              tempoRestante--;
+          }
+      }, 1000);
     </script>
   </body>
 </html>

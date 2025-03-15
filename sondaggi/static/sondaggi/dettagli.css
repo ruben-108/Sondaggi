@@ -230,6 +230,37 @@ button:hover {
   background-color: #2282c2;
 }
 
+/* Timer */
+#timer {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 20px;
+  color: #e74c3c;
+}
+
+#countdown {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* Barra di progresso */
+#progressBarContainer {
+  width: 100%;
+  background-color: #ccc;
+  border-radius: 10px;
+  height: 20px;
+  margin-top: 10px;
+}
+
+#progressBar {
+  height: 100%;
+  background-color: #3498db;
+  width: 100%; /* Inizialmente piena */
+  border-radius: 10px;
+  transition: width 1s ease;
+}
+
+
 /* Responsività per schermi piccoli */
 @media (max-width: 600px) {
   .modal-content {

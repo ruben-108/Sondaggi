@@ -10,10 +10,11 @@ class ChoiceInline(admin.TabularInline):
 class QuestionAdmin(admin.ModelAdmin):
     fieldset = [
         (None, {'fields': ['testo_domanda']}),
-        ("Informazioni data", {'fields': ['data_pubblicazione'], }),
+        ('Informazioni data', {'fields': ['data_pubblicazione'], }),
+        ('Timer per rispondere al sondaggio', {'fields': ['tempo']}),
     ]
     inlines = [ChoiceInline]
-    list_display = ['testo_domanda', 'data_pubblicazione']
+    list_display = ['testo_domanda', 'data_pubblicazione', 'tempo']
     
     # Azione per azzerare i voti di tutte le scelte
     def reset_voti(self, request, queryset):
