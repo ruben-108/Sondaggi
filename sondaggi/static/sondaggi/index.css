@@ -52,7 +52,7 @@ h2 a:hover {
   border-radius: 15px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   max-width: 900px;
-  margin: 20px;
+  margin: 7px;
   animation: slideUp 1s ease-out;
   text-align: center;
 }
