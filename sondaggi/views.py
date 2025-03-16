@@ -146,7 +146,7 @@ def nuovo_account(request, question_id):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             try:
-                User.objects.create_user(username=username, password=password)
+                user = User.objects.create_user(username=username, password=password)
             except IntegrityError:
                 return render(request, 'sondaggi/account.html', {'question_id': question_id, 'username_presente': "L'username inserito è già in uso. Scegline un altro."})
 
@@ -159,7 +159,7 @@ def nuovo_account(request, question_id):
                 'accesso_valido': "True"
             }
             response = render(request, 'sondaggi/dettagli.html', lista_domande_opzioni)
-            response.set_cookie(COOKIE_NAME_LOGIN, 'true', max_age=datetime.timedelta(days=100))
+            response.set_cookie(COOKIE_NAME_LOGIN, user.pk, max_age=datetime.timedelta(days=100))
             return response
     elif request.method == 'GET':
         return render(request, 'sondaggi/account.html', {'question_id': question_id})

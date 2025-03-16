@@ -8,6 +8,7 @@ class Question(models.Model):
     tempo = models.IntegerField(
         null=True,
         blank=True,
+        verbose_name="Tempo per rispondere al sondaggio (facoltativo)",
         validators=[
             MinValueValidator(40),
             MaxValueValidator(600)
