@@ -20,9 +20,11 @@ def dettagli(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     choices = Choice.objects.filter(question=question_id)
 
-    print(f'\n\n{question.tempo}\n\n')
-
-    lista_domande_opzioni = {'question_id': question_id, 'question': question, 'choices': choices}
+    lista_domande_opzioni = {
+        'question_id': question_id,
+        'question': question, 'choices': choices,
+        'tempo': question.tempo,
+    }
     if request.COOKIES.get(COOKIE_NAME_LOGIN):
         lista_domande_opzioni['accesso_valido'] = "True"
 

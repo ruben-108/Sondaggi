@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
+admin.site.site_header = 'Sondaggi Admin'
+admin.site.index_title = 'Admin'
+
 urlpatterns = [
     path('', views.home),
     path('admin/', admin.site.urls),

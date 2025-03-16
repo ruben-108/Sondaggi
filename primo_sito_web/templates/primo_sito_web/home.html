@@ -11,44 +11,32 @@
     <div class="content-box">
       <h1>Benvenuti nel Mio Primo Sito Web</h1>
       <h2>
-        Per visualizzare i sondaggi cliccate su
+        In questo sito puoi votare sondaggi creati da diversi utenti.<br />
+        Per visualizzarli clicca su
         <a href="{% url 'sondaggi:index' %}">questo link</a>
       </h2>
       <p>
-        Per creare nuovi sondaggi, se vi sono già state assegnate le
-        credenziali, fate il login
+        Per creare nuovi sondaggi, se ti sono già state assegnate le
+        credenziali, fai il login
         <a href="/admin/">a questa pagina.</a>
-        In alternativa,
+        <br />In alternativa,
         <a
-          href="mailto:RubenDeacon@protonmail.com?subject=Credenziali%20per%20Creazione%20Sondaggi">
-          scrivete una mail a RubenDeacon@protonmail.com
+          href="mailto:RubenDeacon@protonmail.com?subject=Credenziali%20per%20Creazione%20Sondaggi&body=Buongiorno,%0A%0ACon%20la%20presente%20desidero%20richiedere%20le%20credenziali%20per%20il%20sito%20sondaggi.onrender.com%20affinché%20io%20possa%20creare%20nuovi%20sondaggi.%0A%0ACordiali%20Saluti">
+          scrivi una mail a RubenDeacon@protonmail.com
         </a>
         per richiedere lo username e la password.
       </p>
       <p>
-        Questo è un sito di prova, per cui le funzioni che visualizzerete sono
+        Questo è un sito di prova, per cui le funzioni che visualizzerai sono
         basiche.
       </p>
       <p class="small-text">
         Un particolare ringraziamento a <strong>Mosh Hamedani</strong>, un
-        professionista che mi ha insegnato a programmare. Cliccate
+        professionista che mi ha insegnato a programmare. Clicca
         <a href="https://www.codewithmosh.com" target="_blank">
           su questo link per visitare la sua pagina
         </a>
       </p>
     </div>
-
-    <script>
-      // Animazione di benvenuto in JS
-      document.addEventListener("DOMContentLoaded", () => {
-        const welcomeMessage = document.querySelector("h1");
-        welcomeMessage.style.transform = "scale(0)";
-        welcomeMessage.style.transition = "transform 1s ease-in-out";
-
-        setTimeout(() => {
-          welcomeMessage.style.transform = "scale(1)";
-        }, 500);
-      });
-    </script>
   </body>
 </html>

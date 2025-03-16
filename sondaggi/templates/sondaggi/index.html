@@ -11,26 +11,15 @@
     <h1><a href="/">HomePage</a></h1>
     <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
     <div class="sondaggi">
-      {% if domande %} {% for domanda in domande %}
-      <p>
-        <a href="{% url 'sondaggi:dettagli' domanda.id %}">{{ domanda }}</a>
-      </p>
-      {% endfor %} {% else %}
-      <p>Non ci sono sondaggi disponibili.</p>
+      {% if domande %}
+        {% for domanda in domande %}
+          <p>
+            <a href="{% url 'sondaggi:dettagli' domanda.id %}">{{ domanda }}</a>
+          </p>
+        {% endfor %} 
+      {% else %}
+        <p>Non ci sono sondaggi disponibili.</p>
       {% endif %}
     </div>
-
-    <script>
-      // Animazione di benvenuto
-      document.addEventListener("DOMContentLoaded", () => {
-        const title = document.querySelector("h1");
-        title.style.transform = "scale(0)";
-        title.style.transition = "transform 1s ease-in-out";
-
-        setTimeout(() => {
-          title.style.transform = "scale(1)";
-        }, 500);
-      });
-    </script>
   </body>
 </html>

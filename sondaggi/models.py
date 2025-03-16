@@ -8,9 +8,9 @@ class Question(models.Model):
     tempo = models.IntegerField(
         null=True,
         blank=True,
-        default=600,
+        default=120,
         validators=[
-            MinValueValidator(10),
+            MinValueValidator(40),
             MaxValueValidator(600)
         ]
     )

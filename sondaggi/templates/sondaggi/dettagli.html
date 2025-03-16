@@ -12,7 +12,7 @@
     <h1><a href="/">HomePage</a></h1>
     <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
     <div id="timer">
-      <h3>Tempo Rimanente: <span id="countdown"></span></h3>
+      <h3>Tempo Rimanente: <div id="countdown"></div></h3>
       <div id="progressBarContainer">
           <div id="progressBar"></div>
       </div>
@@ -109,7 +109,7 @@
       };
 
       // Tempo di durata del timer (10 minuti = 600 secondi)
-      var tempoTotale = 30; // in secondi
+      var tempoTotale = parseInt('{{ tempo }}'); // in secondi
       var tempoRestante = tempoTotale;
       var countdownElement = document.getElementById('countdown');
       var progressBar = document.getElementById('progressBar');
