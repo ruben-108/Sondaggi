@@ -1,142 +1,144 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dettagli Sondaggio</title>
-    <link rel="stylesheet" href="{% static 'sondaggi/dettagli.css' %}" />
-  </head>
+  {% load static %}
+  <!DOCTYPE html>
+  <html lang="it">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Dettagli Sondaggio</title>
+      <link rel="stylesheet" href="{% static 'sondaggi/dettagli.css' %}" />
+    </head>
 
-  <body>
-    <h1><a href="/">HomePage</a></h1>
-    <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
-    <div id="timer">
-      <h3>Tempo Rimanente: <div id="countdown"></div></h3>
-      <div id="progressBarContainer">
-          <div id="progressBar"></div>
-      </div>
-    </div>
-    <div class="container">
-      <form
-        action="{% url 'sondaggi:voti' question_id %}"
-        method="post"
-        ,
-        id="votingForm">
-        {% csrf_token %}
-        <fieldset>
-          <legend>{{ question.testo_domanda }}</legend>
-          {% if messaggio_errore %}
-          <p class="messaggio_errore">{{ messaggio_errore }}</p>
-          <div class="link-wrapper">
-            <a
-              href="{% url 'sondaggi:risultati' question_id %}"
-              ,
-              class="risultati"
-              >Visualizza risultati</a
-            >
+    <body>
+      <h1><a href="/">HomePage</a></h1>
+      <h2><a href="{% url 'sondaggi:index' %}">Elenco Sondaggi</a></h2>
+      {% if question.tempo %}
+        <div id="timer">
+          <h3>Tempo Rimanente: <div id="countdown"></div></h3>
+          <div id="progressBarContainer">
+              <div id="progressBar"></div>
           </div>
-          {% endif %}
-          <div class="choices">
-            {% if choices %}
-              {% for choice in choices %}
-                <div class="choice-option">
-                  <input
-                    type="radio"
-                    name="choice"
-                    id="choice{{ forloop.counter }}"
-                    value="{{ choice.id }}" />
-                      <label for="choice{{ forloop.counter }}">
-                        {{ choice.testo_opzione }}
-                  </label>
-                </div>
-              {% endfor %}
-            {% else %}
-              <p>Non ci sono opzioni da cui scegliere per il momento.</p>
-            {% endif %}
-          </div>
-        </fieldset>
-        <input type="submit" value="Vota" , id="voteButton" />
-      </form>
-    </div>
-
-    <div
-      id="loginModal"
-      class="modal"
-      style="display: {% if mostra_modal %}flex{% else %}none{% endif %};">
-      <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h2 class="pop-up">Per votare, inserisci le tue credenziali</h2>
-        <form id="loginForm", action="{% url 'sondaggi:login' question_id %}", method="post">
+        </div>
+      {% endif %}
+      <div class="container">
+        <form
+          action="{% url 'sondaggi:voti' question_id %}"
+          method="post"
+          ,
+          id="votingForm">
           {% csrf_token %}
-          {% if messaggio_errore_login %}
-          <div class="messaggio_errore">
-            <p>{{ messaggio_errore_login }}</p>
-          </div>
-          {% endif %}
-          <label class="label-popup" for="username">Username:</label>
-          <input type="text" id="username" name="username" required />
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" required />
-          <p class="account">
-            Non sei registrato?
-            <a href="{% url 'sondaggi:account' question_id %}", class="link-account">Crea un account</a>
-          </p>
-          <button type="submit">Accedi</button>
+          <fieldset>
+            <legend>{{ question.testo_domanda }}</legend>
+            {% if messaggio_errore %}
+            <p class="messaggio_errore">{{ messaggio_errore }}</p>
+            <div class="link-wrapper">
+              <a
+                href="{% url 'sondaggi:risultati' question_id %}"
+                ,
+                class="risultati"
+                >Visualizza risultati</a
+              >
+            </div>
+            {% endif %}
+            <div class="choices">
+              {% if choices %}
+                {% for choice in choices %}
+                  <div class="choice-option">
+                    <input
+                      type="radio"
+                      name="choice"
+                      id="choice{{ forloop.counter }}"
+                      value="{{ choice.id }}" />
+                        <label for="choice{{ forloop.counter }}">
+                          {{ choice.testo_opzione }}
+                    </label>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <p>Non ci sono opzioni da cui scegliere per il momento.</p>
+              {% endif %}
+            </div>
+          </fieldset>
+          <input type="submit" value="Vota" , id="voteButton" />
         </form>
       </div>
-    </div>
 
-    <script>
-      // Modale per login
-      var accessoValido = "{{ accesso_valido }}";
-      var modal = document.getElementById("loginModal");
-      var closeModal = document.getElementById("closeModal");
-      var voteButton = document.getElementById("voteButton");
-      var votingForm = document.getElementById("votingForm");
+      <div
+        id="loginModal"
+        class="modal"
+        style="display: {% if mostra_modal %}flex{% else %}none{% endif %};">
+        <div class="modal-content">
+          <span class="close" id="closeModal">&times;</span>
+          <h2 class="pop-up">Per votare, inserisci le tue credenziali</h2>
+          <form id="loginForm", action="{% url 'sondaggi:login' question_id %}", method="post">
+            {% csrf_token %}
+            {% if messaggio_errore_login %}
+            <div class="messaggio_errore">
+              <p>{{ messaggio_errore_login }}</p>
+            </div>
+            {% endif %}
+            <label class="label-popup" for="username">Username:</label>
+            <input type="text" id="username" name="username" required />
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
+            <p class="account">
+              Non sei registrato?
+              <a href="{% url 'sondaggi:account' question_id %}", class="link-account">Crea un account</a>
+            </p>
+            <button type="submit">Accedi</button>
+          </form>
+        </div>
+      </div>
 
-      voteButton.onclick = function (e) {
-        if (accessoValido === "True") {
-          votingForm.submit();
-        } else {
-          e.preventDefault();
-          modal.style.display = "flex";
-        }
-      };
-      // Chiudi la modale quando clicchi sulla "X"
-      closeModal.onclick = function () {
-        modal.style.display = "none";
-      };
+      <script>
+        // Modale per login
+        var accessoValido = "{{ accesso_valido }}";
+        var modal = document.getElementById("loginModal");
+        var closeModal = document.getElementById("closeModal");
+        var voteButton = document.getElementById("voteButton");
+        var votingForm = document.getElementById("votingForm");
 
-      // Tempo di durata del timer (10 minuti = 600 secondi)
-      var tempoTotale = parseInt('{{ tempo }}'); // in secondi
-      var tempoRestante = tempoTotale;
-      var countdownElement = document.getElementById('countdown');
-      var progressBar = document.getElementById('progressBar');
-      var voteButton = document.getElementById('voteButton');
-      
-      // Aggiorniamo la barra di progresso ogni secondo
-      var countdownInterval = setInterval(function() {
-          var minuti = Math.floor(tempoRestante / 60);
-          var secondi = tempoRestante % 60;
-
-          // Aggiorniamo il testo del countdown
-          countdownElement.innerHTML = minuti + "m " + secondi + "s ";
-
-          // Aggiorniamo la larghezza della barra di progresso
-          var percentuale = (tempoRestante / tempoTotale) * 100;
-          progressBar.style.width = percentuale + "%";
-
-          // Se il tempo è scaduto
-          if (tempoRestante <= 0) {
-              clearInterval(countdownInterval);
-              countdownElement.innerHTML = "Il tempo è scaduto!";
-              progressBar.style.width = "0%"; // La barra si svuota
-              voteButton.disabled = true; // Disabilita il pulsante di voto
+        voteButton.onclick = function (e) {
+          if (accessoValido === "True") {
+            votingForm.submit();
           } else {
-              tempoRestante--;
+            e.preventDefault();
+            modal.style.display = "flex";
           }
-      }, 1000);
-    </script>
-  </body>
-</html>
+        };
+        // Chiudi la modale quando clicchi sulla "X"
+        closeModal.onclick = function () {
+          modal.style.display = "none";
+        };
+
+        // Tempo di durata del timer (10 minuti = 600 secondi)
+        var tempoTotale = parseInt('{{ question.tempo }}'); // in secondi
+        var tempoRestante = tempoTotale;
+        var countdownElement = document.getElementById('countdown');
+        var progressBar = document.getElementById('progressBar');
+        var voteButton = document.getElementById('voteButton');
+        
+        // Aggiorniamo la barra di progresso ogni secondo
+        var countdownInterval = setInterval(function() {
+            var minuti = Math.floor(tempoRestante / 60);
+            var secondi = tempoRestante % 60;
+
+            // Aggiorniamo il testo del countdown
+            countdownElement.innerHTML = minuti + "m " + secondi + "s ";
+
+            // Aggiorniamo la larghezza della barra di progresso
+            var percentuale = (tempoRestante / tempoTotale) * 100;
+            progressBar.style.width = percentuale + "%";
+
+            // Se il tempo è scaduto
+            if (tempoRestante <= 0) {
+                clearInterval(countdownInterval);
+                countdownElement.innerHTML = "Il tempo è scaduto!";
+                progressBar.style.width = "0%"; // La barra si svuota
+                voteButton.disabled = true; // Disabilita il pulsante di voto
+            } else {
+                tempoRestante--;
+            }
+        }, 1000);
+      </script>
+    </body>
+  </html>

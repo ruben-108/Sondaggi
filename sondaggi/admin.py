@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.http import HttpRequest
 from .models import Question, Choice, Vote
 from django.utils import timezone
 
@@ -6,15 +7,14 @@ from django.utils import timezone
 class ChoiceInline(admin.TabularInline):
     model = Choice
     extra = 2
+    readonly_fields = ['voti']
 
+@admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    fieldset = [
-        (None, {'fields': ['testo_domanda']}),
-        ('Informazioni data', {'fields': ['data_pubblicazione'], }),
-        ('Timer per rispondere al sondaggio', {'fields': ['tempo']}),
-    ]
     inlines = [ChoiceInline]
     list_display = ['testo_domanda', 'data_pubblicazione', 'tempo']
+    list_editable = ['tempo']
+    list_per_page = 10
     
     # Azione per azzerare i voti di tutte le scelte
     def reset_voti(self, request, queryset):
@@ -29,5 +29,14 @@ class QuestionAdmin(admin.ModelAdmin):
     # Aggiungiamo l'azione personalizzata
     actions = [reset_voti]
 
-admin.site.register(Question, QuestionAdmin)
-admin.site.register(Vote)
+@admin.register(Vote)
+class VoteAdmin(admin.ModelAdmin):
+    list_display = ['question', 'choice', 'user']
+    list_per_page = 10
+    readonly_fields = ['question', 'choice', 'user']
+
+    def has_add_permission(self, request: HttpRequest) -> bool:
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False

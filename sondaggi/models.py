@@ -4,11 +4,10 @@ from django.contrib.auth.models import User
 
 class Question(models.Model):
     testo_domanda = models.CharField(max_length=200)
-    data_pubblicazione = models.DateTimeField()
+    data_pubblicazione = models.DateTimeField(auto_now_add=True)
     tempo = models.IntegerField(
         null=True,
         blank=True,
-        default=120,
         validators=[
             MinValueValidator(40),
             MaxValueValidator(600)
@@ -17,6 +16,9 @@ class Question(models.Model):
 
     def __str__(self):
         return f'{self.testo_domanda}'
+    
+    class Meta:
+        ordering = ['testo_domanda']
 
 
 class Choice(models.Model):
@@ -33,4 +35,4 @@ class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'Utente {self.user} ha votato per {self.question}'
+        return f'{self.question}'

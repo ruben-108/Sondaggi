@@ -13,7 +13,7 @@ from .models import Question, Choice, Vote
 COOKIE_NAME_LOGIN = 'logged_in'
 
 def index(request):
-	lista_domande = Question.objects.order_by('data_pubblicazione')
+	lista_domande = Question.objects.all()
 	return render(request, "sondaggi/index.html", {'domande': lista_domande})
 
 def dettagli(request, question_id):
@@ -22,8 +22,8 @@ def dettagli(request, question_id):
 
     lista_domande_opzioni = {
         'question_id': question_id,
-        'question': question, 'choices': choices,
-        'tempo': question.tempo,
+        'question': question,
+        'choices': choices,
     }
     if request.COOKIES.get(COOKIE_NAME_LOGIN):
         lista_domande_opzioni['accesso_valido'] = "True"
@@ -53,12 +53,15 @@ def risultati(request, question_id):
 def mostra_errori(request, question, messaggio_errore):
     """Funzione di utilità per gestire la visualizzazione degli errori e il rendering del template"""
     choices = Choice.objects.filter(question=question)
-    return render(request, "sondaggi/dettagli.html", {
+    lista_domande_opzioni = {
         'question_id': question.id,
         'question': question,
         'choices': choices,
         'messaggio_errore': messaggio_errore
-    })
+    }
+    if request.COOKIES.get(COOKIE_NAME_LOGIN):
+        lista_domande_opzioni['accesso_valido'] = "True"
+    return render(request, "sondaggi/dettagli.html", lista_domande_opzioni)
 
 def voti(request, question_id):
     question = get_object_or_404(Question, pk=question_id)

@@ -100,11 +100,13 @@ fieldset {
 }
 
 legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 1.6rem;
   color: #3498db;
   font-weight: bold;
   margin-bottom: 20px;
-  text-align: center;
 }
 
 .choices {
