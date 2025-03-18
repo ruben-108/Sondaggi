@@ -68,9 +68,9 @@ def voti(request, question_id):
 
     cookie_name = f'voted_{question_id}'
     timestamp_name = f'timestamp_{question_id}'
+    messaggio_errore = "Hai già votato in questo sondaggio!"
     if request.COOKIES.get(cookie_name):
         if request.COOKIES.get(timestamp_name) > str(question.data_pubblicazione):
-            messaggio_errore = "Hai già votato in questo sondaggio!"
             return mostra_errori(request, question, messaggio_errore)
 
     try:
@@ -79,12 +79,16 @@ def voti(request, question_id):
         messaggio_errore = "Opzione non valida!"
         return mostra_errori(request, question, messaggio_errore)
     
-    selected_choice.voti = F("voti") + 1
-    selected_choice.save()
-
     user = User.objects.get(pk=int(request.COOKIES.get(COOKIE_NAME_LOGIN)))
+    has_voted = Vote.objects.filter(user_id=user.id, question_id=question_id).exists()
+    if has_voted:
+        return mostra_errori(request, question, messaggio_errore)
+    
     vote = Vote(question=question, choice=selected_choice, user=user)
     vote.save()
+    
+    selected_choice.voti = F("voti") + 1
+    selected_choice.save()
     
     response = HttpResponseRedirect(reverse("sondaggi:risultati", args=(question_id,)))
     
